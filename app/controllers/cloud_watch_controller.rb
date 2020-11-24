@@ -45,7 +45,7 @@ class CloudWatchController < ApplicationController
 
   def index
     data = get_data
-    logger.debug("get_data=#{data.to_json}")
+    #logger.debug("get_data=#{data.to_json}")
     if nil == params[:start_time]
       @start_time = (DateTime.now.utc - 7*3600*24)
       @end_time = DateTime.now.utc
@@ -70,7 +70,7 @@ class CloudWatchController < ApplicationController
   def refind
     
     
-    logger.debug("refind params=#{params}")
+    #logger.debug("refind params=#{params}")
     @start_time = params[:start_time]
     @end_time = params[:end_time]
     
@@ -384,9 +384,9 @@ class CloudWatchController < ApplicationController
         :scan_by => "TimestampAscending", # accepts TimestampDescending, TimestampAscending
         :max_datapoints => 1000,
       }
-      logger.debug("data = #{data}")
+      #logger.debug("data = #{data}")
       res = client.get_metric_data(data)
-      logger.debug("res = #{res}")
+      #logger.debug("res = #{res}")
       @res[:metric_data_results][metric][:timestamps].concat(res.metric_data_results[0][:timestamps])
       @res[:metric_data_results][metric][:values].concat(res.metric_data_results[0][:values])
       data[:next_token] = res.next_token
@@ -671,7 +671,8 @@ class CloudWatchController < ApplicationController
     add_ajax = false
     if record_showing
       presenter.hide(:form_buttons_div)
-      presenter.update(:main_div, r[:partial => "layouts/textual_groups_generic"])
+      #presenter.update(:main_div, r[:partial => "layouts/textual_groups_custom"])
+      presenter.update(:main_div, r[:partial => "right"])
     elsif @in_a_form
       partial_locals = {:controller => 'vm'}
       partial_locals[:action_url] = @lastaction if partial == 'layouts/x_gtl'
@@ -797,7 +798,7 @@ class CloudWatchController < ApplicationController
     presenter[:record_id] = @record.try(:id)
 
     # Hide/show searchbox depending on if a list is showing
-    presenter.set_visibility(!(@record || @in_a_form), :adv_searchbox_div)
+    #presenter.set_visibility(!(@record || @in_a_form), :adv_searchbox_div)
     presenter[:clear_search_toggle] = clear_search_status
 
     presenter[:osf_node] = x_node # Open, select, and focus on this node
