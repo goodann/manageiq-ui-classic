@@ -40,6 +40,7 @@ module ApplicationHelper::PageLayouts
       server_build
       storage
       storage_pod
+      test_dummy_page
     ].include?(@layout)
 
     return false if %w[

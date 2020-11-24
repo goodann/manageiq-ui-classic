@@ -1,0 +1,12 @@
+//= render :partial => "shared/views/show_alerts_list"
+.testclass
+  Test
+= datepicker_input_tag("test_date")
+.query
+  Query
+= text_field_tag("query")
+%button.btn.btn-default{"onclick" => "test()",
+                                        "title"   => _('Click to select Retirement Entry Point')}btn
+:javascript
+    function test(){
+        alert(query.value)}

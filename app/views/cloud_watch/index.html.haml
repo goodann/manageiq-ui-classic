@@ -1,0 +1,29 @@
+= render :partial => "layouts/flash_msg"
+#top_div
+= form_tag({:action    => "refind",
+            :id        => params[:id]},
+            {:multipart => true,
+            :method    => :post}) do
+  .start_day
+    Start_Day:
+    = datetimepicker_input_tag("start_time",@start_time.strftime("%m/%d/%Y %H:%M"),'id'=>'start_time')
+  .end_day
+    End_Day:
+    = datetimepicker_input_tag("end_time",@end_time.strftime("%m/%d/%Y %H:%M"),'id'=>'start_time')
+  .period
+    Watch period:
+    = text_field_tag("period",@period,:maxlength  => 40)
+  = button_to("label")
+- if @record
+  -# Showing a specific VM or Template record
+  #main_div
+    = render :partial => "right"
+    
+- else
+  -# Showing a list of VMs
+  #main_div
+    = render(:partial => 'layouts/x_gtl')
++
+- if show_advanced_search?
+  :javascript
+    #{javascript_show_if_exists("adv_searchbox_div")}

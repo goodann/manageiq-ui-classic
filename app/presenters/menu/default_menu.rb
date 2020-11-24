@@ -4,6 +4,9 @@ module Menu
     class << self
       def default_menu
         [
+          #dummy_menu_section,
+          costexplorer_menu_section,
+          cloudwatch_menu_section,
           # user, group switcher & find are NOT part of the menu
           overview_menu_section,
           services_menu_section,
@@ -21,6 +24,31 @@ module Menu
           settings_menu_section,
           help_menu_section,
         ]
+      end
+      
+      def dummy_menu_section
+        Menu::Section.new(:dummy, N_("Dummy"), 'carbon--Cloud', [
+          #Menu::Item.new('hello',  N_('Hello'),  'hello',  {:feature => 'hello_view'},           '/ssk_test_page/index'),
+          Menu::Item.new('dummyIndex',  N_('dummyIndex'),  'dummyIndex',  {:feature => 'dummy_index'},           '/test_dummy_page/index'),
+          
+        ])
+      end
+      def costexplorer_menu_section
+        Menu::Section.new(:cost, N_("Useage Meter"), 'carbon--Cloud', [
+          #Menu::Item.new('hello',  N_('Hello'),  'hello',  {:feature => 'hello_view'},           '/ssk_test_page/index'),
+          Menu::Item.new('ShowCreditCost',  N_('credit Cost'),  'credit_cost',  {:feature => 'credit_explorer_view'},           '/cost_explorer/explorer'),
+          Menu::Item.new('ShowInstanceCost',  N_('instance Cost'),  'instance_cost',  {:feature => 'instance_explorer_view'},           '/cost_explorer/explorer_per_instance'),
+          
+          
+        ])
+        
+      end
+
+      def cloudwatch_menu_section
+        Menu::Section.new(:watch, N_("Cloud Watch"), 'carbon--Cloud', [
+            #Menu::Item.new('hello',  N_('Hello'),  'hello',  {:feature => 'watch_hello'},           '/cloud_watch/index'),
+            Menu::Item.new('explorer',  N_('Watch Explorer'),  'watch_explorer',  {:feature => 'watch_explorer_view'},           '/cloud_watch/explorer'),
+          ])
       end
 
       def compute_menu_section

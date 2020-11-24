@@ -1,0 +1,11 @@
+#main_chart
+  %table.table.table-bordered
+    - get_metric_names.each_with_index do |(metric,value),index|
+      - if (index % 3) == 0
+        %tr
+      %td
+        %h2
+          = value[:label]
+        = chart_local(aws_data_to_graph(index), :id => "miq_widgetchart_"+index.to_s.html_safe)
+#main_table
+  = render :partial => "layouts/textual_groups_custom"

@@ -1,0 +1,36 @@
+= render :partial => "layouts/flash_msg"
+-#= render :partial => '/layouts/form_buttons'
+-#, :method => :post, :params=> { :test_date => :tast_date})
++
++
+= form_tag({:action    => "test",
+            :id        => params[:id]},
+            {:multipart => true,
+            :method    => :post}) do
+    .day
+        = datepicker_input_tag("day",DateTime.now.utc.strftime("%m/%d/%Y"),'id'=>'day')
+    .start_day_time
+        Start_Day:
+        = datetimepicker_input_tag("start_time",(DateTime.now.utc - 7*3600*24).strftime("%m/%d/%Y %H:%M"),'id'=>'start_time')
+    .end_day_time
+        End_Day:
+        = datetimepicker_input_tag("end_time",DateTime.now.utc.strftime("%m/%d/%Y %H:%M"),'id'=>'start_time')
+    .drop_down
+        Drop_Down:
+        = select_tag('drop_down', options_for_select([["a"],["b"],["c"],["d"]]))
+    .checkBox
+        CheckBox:
+        = check_box_tag("check_box","v",true)
+    .radiodio
+        RadioButton:
+        = radio_button_tag('radio', "first", true)
+        = label_tag('radio_first', _("first"))
+        = radio_button_tag('radio', "second", false)
+        = label_tag('radio_second', _("second"))
+        = radio_button_tag('radio', "3", false)
+        = label_tag('radio_3', _("3"))
+    .textEdit
+        Text:
+        = text_field_tag("textEdit","value",:maxlength  => 40)
+    .bts
+        = button_to("label")

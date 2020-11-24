@@ -1,0 +1,18 @@
+= render :partial => "layouts/flash_msg"
+- if respond_to?(:textual_summary_flash_list)
+  - process_flash_messages(textual_summary_flash_list).each do |flash|
+    :javascript
+      add_flash("#{j_str(flash[:message])}", "#{j_str(flash[:level])}")
+.main-content
+-#%button.btn.btn-default{"onclick" => "test2()",
+        "title"   => _('Click to select Retirement Entry Point')}btn
+-#= button_tag(t = _("Add"),
+                         :class   => 'btn btn-primary',
+                         :alt     => t,
+                         :title   => t,
+                         :onclick => "miqAjaxButton('#{url_for_only_path(:action => 'explorer',
+                                                               :button => "add")}');")
+#textual_summary 
+.table1
+  :javascript
+      ManageIQ.component.componentFactory('TextualSummaryWrapper', '#textual_summary', {summary: #{textual_group_aws.to_json}});
