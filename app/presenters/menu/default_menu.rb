@@ -27,17 +27,17 @@ module Menu
       end
       
       def dummy_menu_section
-        Menu::Section.new(:dummy, N_("Dummy"), 'carbon--Cloud', [
+        Menu::Section.new(:dummy, N_("Dummy"), 'fa fa-dashboard', [
           #Menu::Item.new('hello',  N_('Hello'),  'hello',  {:feature => 'hello_view'},           '/ssk_test_page/index'),
           Menu::Item.new('dummyIndex',  N_('dummyIndex'),  'dummyIndex',  {:feature => 'dummy_index'},           '/test_dummy_page/index'),
           
         ])
       end
       def costexplorer_menu_section
-        Menu::Section.new(:cost, N_("Useage Meter"), 'carbon--Cloud', [
+        Menu::Section.new(:cost, N_("과금"), 'fa fa-dashboard', [
           #Menu::Item.new('hello',  N_('Hello'),  'hello',  {:feature => 'hello_view'},           '/ssk_test_page/index'),
-          Menu::Item.new('ShowCreditCost',  N_('credit Cost'),  'credit_cost',  {:feature => 'credit_explorer_view'},           '/cost_explorer/explorer'),
-          Menu::Item.new('ShowInstanceCost',  N_('instance Cost'),  'instance_cost',  {:feature => 'instance_explorer_view'},           '/cost_explorer/explorer_per_instance'),
+          Menu::Item.new('ShowCreditCost',  N_('계정별 요금'),  'credit_cost',  {:feature => 'credit_explorer_view'},           '/cost_explorer/show_list'),
+          #Menu::Item.new('ShowInstanceCost',  N_('instance Cost'),  'instance_cost',  {:feature => 'instance_explorer_view'},           '/cost_explorer/explorer_per_instance'),
           
           
         ])
@@ -45,9 +45,9 @@ module Menu
       end
 
       def cloudwatch_menu_section
-        Menu::Section.new(:watch, N_("Cloud Watch"), 'carbon--Cloud', [
+        Menu::Section.new(:watch, N_("모니터링"), 'fa fa-dashboard', [
             #Menu::Item.new('hello',  N_('Hello'),  'hello',  {:feature => 'watch_hello'},           '/cloud_watch/index'),
-            Menu::Item.new('explorer',  N_('Watch Explorer'),  'watch_explorer',  {:feature => 'watch_explorer_view'},           '/cloud_watch/explorer'),
+            Menu::Item.new('explorer',  N_('인스턴스별 모니터링'),  'watch_explorer',  {:feature => 'watch_explorer_view'},           '/cloud_watch/explorer'),
           ])
       end
 

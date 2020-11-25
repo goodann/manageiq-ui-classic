@@ -1,0 +1,7 @@
+#main_div
+  - if EmsCloud.any?
+    = render :partial => "layouts/gtl"
+  - else
+    = render :partial => 'layouts/empty',
+             :locals => {:add_message => _("Add a new Cloud Provider"),
+                         :documentation => ::Settings.docs.cloud_provider}

@@ -40,7 +40,7 @@ module Mixins
         end
       end
 
-      if params[:action] == 'show' && !performed? && self.class.respond_to?(:default_show_template)
+      if params[:action] == 'show' && !performed? && self.class.respond_to?(:default_show_template) && params[:controller] != "cost_explorer"
         render :template => self.class.default_show_template
       end
     end

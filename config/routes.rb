@@ -3259,108 +3259,49 @@ Rails.application.routes.draw do
     },
 
     :cost_explorer => {
-      
       :get  => %w(
-        explorer_per_instance
+        index
+        explorer
+        dialog_load
+        discover
         download_data
         download_summary_pdf
-        drift_to_csv
-        drift_to_pdf
-        drift_to_txt
-        explorer
-        filesystem_download
-        retirement_info
-        reconfigure_form_fields
-        launch_html5_console
-        launch_vmrc_console
-        perf_chart_chooser
+        ems_cloud_form_fields
         protect
-        retire
-        right_size_print
         show
+        show_list
+        sync_users
         tagging_edit
-        resize
-        resize_form_fields
-        live_migrate_form_fields
-        attach
-        detach
-        evacuate
-        evacuate_form_fields
-        associate_floating_ip
-        associate_floating_ip_form_fields
-        disassociate_floating_ip
-        disassociate_floating_ip_form_fields
-        add_security_group
-        remove_security_group
       ) +
-              compare_get,
+        compare_get,
       :post => %w(
-        advanced_settings
-        accordion_select
+        new
         button
-        edit_vm
-        resize_vm
-        event_logs
-        explorer
-        launch_html5_console
-        launch_cockpit
-        filesystems
-        filesystem_drivers
+        create
+        dynamic_checkbox_refresh
+        dynamic_list_refresh
+        dynamic_radio_button_refresh
+        dynamic_text_box_refresh
         form_field_changed
-        guest_applications
-        groups
-        html5_console
-        kernel_drivers
-        linux_initprocesses
-        ownership_update
-        patches
-        perf_chart_chooser
-        policies
-        processes
+        listnav_search_selected
         protect
-        prov_edit
-        prov_field_changed
+        provider_type_field_changed
         quick_search
-        registry_items
-        reload
-        retire
-        reconfigure_update
-        scan_histories
         sections_field_changed
-        security_groups
-        sort_template_grid
-        floating_ips
-        network_routers
-        network_ports
-        cloud_subnets
-        cloud_networks
-        cloud_volumes
         show
+        show_list
+        sync_users
         tagging_edit
         tl_chooser
-        tree_autoload
-        tree_select
-        users
-        vm_pre_prov
+        update
         wait_for_task
-        win32_services
-        live_migrate_vm
-        attach_volume
-        detach_volume
-        evacuate_vm
-        ownership_update
-        associate_floating_ip_vm
-        disassociate_floating_ip_vm
       ) +
-              adv_search_post +
-              compare_post +
-              dialog_runner_post +
-              drift_post +
-              exp_post +
-              policy_post +
-              pre_prov_post +
-              snap_post +
-              x_post
+               adv_search_post +
+               compare_post +
+               dialog_runner_post +
+               discover_get_post +
+               exp_post +
+               save_post
     },
     :cloud_watch => {
       
