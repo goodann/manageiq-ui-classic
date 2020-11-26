@@ -1,0 +1,7 @@
+-# needed by render :action => "show" in application controller
+-#= render :partial => "shared/views/ems_common/show"
+-#= render :partial => "right"
+= render :partial => "layouts/flash_msg"
+#main_chart
+    = chart_local(aws_data_to_graph, :id => "miq_widgetchart_0".html_safe)
+    -#aws_data_to_graph

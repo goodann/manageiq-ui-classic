@@ -3408,6 +3408,16 @@ Rails.application.routes.draw do
               snap_post +
               x_post
     },
+    
+    :multi_cost_view => {
+      :get => %w(
+        index
+      ),
+      :post => %w(
+
+      ),
+    },
+
     :test_dummy_page => {
       :get  => %w(
         index

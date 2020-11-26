@@ -1,0 +1,8 @@
+-#= render :partial => "layouts/textual_groups_custom"
+= render :partial => "layouts/flash_msg"
+#main_chart
+    = chart_local(aws_data_to_graph, :id => "miq_widgetchart_0".html_safe)
+    -#= chart_local(aws_forecast_data_to_graph, :id => "miq_widgetchart_1".html_safe)
+    -#= chart_local(aws_reservation_data_to_graph, :id => "miq_widgetchart_2".html_safe)
+-##main_table
+    -#= render :partial => "layouts/textual_groups_custom"

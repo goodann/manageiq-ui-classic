@@ -26,8 +26,9 @@ class TestDummyPageController < ApplicationController
     #logger.debug("model = #{model}")
     #record = identify_record(2, EmsCloud)
     #logger.debug("record = #{record}")
-    vm = find_record_with_rbac(VmCloud,2)
-    logger.debug("vm = #{vm}")
+    #vm = find_record_with_rbac(VmCloud,2)
+    #logger.debug("VmCloud = #{VmCloud}")
+    #logger.debug("ExtManagementSystem=#{ExtManagementSystem}")
     
   end
 

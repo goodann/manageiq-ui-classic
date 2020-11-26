@@ -4,7 +4,7 @@ module Menu
     class << self
       def default_menu
         [
-          #dummy_menu_section,
+          dummy_menu_section,
           costexplorer_menu_section,
           cloudwatch_menu_section,
           # user, group switcher & find are NOT part of the menu
@@ -37,6 +37,7 @@ module Menu
         Menu::Section.new(:cost, N_("과금"), 'fa fa-dashboard', [
           #Menu::Item.new('hello',  N_('Hello'),  'hello',  {:feature => 'hello_view'},           '/ssk_test_page/index'),
           Menu::Item.new('ShowCreditCost',  N_('계정별 요금'),  'credit_cost',  {:feature => 'credit_explorer_view'},           '/cost_explorer/show_list'),
+          Menu::Item.new('ShowCreditCost',  N_('등록된 계정간 요금 비교'),  'multi_cost',  {:feature => 'multi_cost_view'},           '/multi_cost_view/index'),
           #Menu::Item.new('ShowInstanceCost',  N_('instance Cost'),  'instance_cost',  {:feature => 'instance_explorer_view'},           '/cost_explorer/explorer_per_instance'),
           
           
