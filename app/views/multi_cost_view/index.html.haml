@@ -4,4 +4,6 @@
 = render :partial => "layouts/flash_msg"
 #main_chart
     = chart_local(aws_data_to_graph, :id => "miq_widgetchart_0".html_safe)
-    -#aws_data_to_graph
+#textual_summary
+:javascript
+    ManageIQ.component.componentFactory('TextualSummaryWrapper', '#textual_summary', {summary: #{textual_group_aws.to_json}});

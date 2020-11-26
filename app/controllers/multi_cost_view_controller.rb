@@ -24,16 +24,6 @@ class MultiCostViewController < ApplicationController
         ManageIQ::Providers::Amazon::CloudManager.all.each do |manager|
             userid = manager.authentication_userid
             passwd = manager.authentication_password
-            #logger.debug("manager=#{manager.to_json}")
-            #ext_mgt_system = ExtManagementSystem.find(manager.id)
-            #ext_mgt_system = vm.ext_management_system
-            #logger.debug("ext_mgt_system=#{ext_mgt_system.to_json}")
-            
-            
-            #userid = ext_mgt_system.authentication_userid
-            #passwd = ext_mgt_system.authentication_password
-            #logger.debug ("userid = #{userid}")
-            #logger.debug ("passwd = #{passwd}")
             options = {
                 :credentials   => Aws::Credentials.new(userid, passwd),
                 :region        => 'us-east-1',
@@ -47,7 +37,7 @@ class MultiCostViewController < ApplicationController
         return clients
     end
     def get_aws_datas
-
+        return @res if @res!= nil
         clients = get_all_aws_clients
         data = 
         {
@@ -56,111 +46,44 @@ class MultiCostViewController < ApplicationController
             :start => (DateTime.now.utc - 7*3600*24).strftime("%Y-%m-%d"),#"2020-11-01",# required
             :end => (DateTime.now.utc + 1*3600*24).strftime("%Y-%m-%d"),#"2020-11-12",# required
         },
-        # :filter =>
-        # {
-        #   :dimensions => {
-        #     :key => :RESOURCE_ID, # required
-        #     :values => ["No Resource"], # required
-        #     # :key => :SERVICE,
-        #     # :values => [
-        #     #   "Amazon Elastic Compute Cloud - Compute"
-        #     # ],
-        #   },
-        # },
+
         :granularity => "DAILY",
         :metrics => [:AmortizedCost], #, :BlendedCost, :NetAmortizedCost, :NetUnblendedCost, :NormalizedUsageAmount, :UnblendedCost, :UsageQuantity], # required
         }
-        #logger.debug("data = #{data}")
-        res=[]
-        clients.each do |client|
-            res.push(client.get_cost_and_usage(data))
+
+        @res=[]
+        clients.each_with_index do |client,index|
+            res = client.get_cost_and_usage(data)
+            @res.push(res)
+            
         end
-        # data[:filter] = 
-        # {
-        # :dimensions => {
-        #     :key => :SERVICE,
-        #     :values => [
-        #     "Amazon Elastic Compute Cloud - Compute"
-        #     ],
-        # },
-        # }
-        # data[:group_by] =
-        # [
-        # {
-        #     :type => "DIMENSION",
-        #     :key => "RESOURCE_ID",
-        # },
-        # ]
-        #@res_resources = client.get_cost_and_usage_with_resources(data)
-        return res
+        return @res
     end
 
     def aws_data_to_graph
         #res,res_resources=get_aws_cost_and_usage_data
         res_list = get_aws_datas
         chart_data=[]
-        #logger.debug("res_list =#{res_list}")
+        
         inserted_x=false
         res_list.each_with_index do |res,index|
             obj=res[:results_by_time]
-            index
-            #obj_res= res_resources[:results_by_time]
-            index = 1
+            
             datalist={}
             stamplist=['x']
             outObj = {}
             day_sum = {}
-            #logger.debug("res=#{res}")
-            ##
-            logger.debug ("@model.all[#{index}][:name]=#{@model.all[index-1][:name]}")
-            no_resource_data=[@model.all[index-1][:name]]
+            no_resource_data=[@model.all[index][:name]]
 
             obj.each do |day|
-                #day_sum[day[:time_period][:start]] = day[:total]["AmortizedCost"][:amount].to_f
-                no_resource_data.push(day[:total]["AmortizedCost"][:amount].to_f)
+                no_resource_data.push(day[:total]["AmortizedCost"][:amount].to_f.round(2))
                 stamplist.push(day[:time_period][:start]) if false == inserted_x
             end
             if false == inserted_x
                 chart_data.push(stamplist)
                 inserted_x=true
             end
-            ##
-            
-            #stamplist.push(day) if false == stamplist.has_key?(day)
-            
-            # iter[:groups].each do |group_data|
-            #     oper = group_data[:keys][0]
-            #     datalist[oper] = {} if nil == datalist[oper]
-                
-            #     group_data[:metrics].each do |key,value|
-            #     datalist[oper][day] = {key => value[:amount]}
-            #     day_sum[day]-=value[:amount].to_f
-            #     end
-            # end
-            #no_resource_data.push(day_sum[day])
-            # end
-        
-            # chart_data=[stamplist]
-            # name_list = ["No Resource"]
-            
-            
             chart_data.push(no_resource_data)
-        
-            # datalist.each_with_index  do |(key,value),index|
-            # data = []
-            # name_list.push(key)
-            # data[0] = key
-        
-            # day_sum.each do |day,sum|
-            #     if false == value.has_key?(day)
-            #     data.push(0.0)
-            #     else
-            #     data.push(value[day]["AmortizedCost"].to_f)
-            #     end
-            # end
-            # data.unshift()
-            # chart_data.push(data)
-            # end
         end
     
         outObj = {
@@ -221,8 +144,44 @@ class MultiCostViewController < ApplicationController
           },
           :legend => {},
         }
-        #logger.debug("ssk_test_outObj = #{outObj.to_json}")
         return outObj
     end
     helper_method :aws_data_to_graph
+
+
+
+    def textual_group_aws
+        res_list = get_aws_datas
+        return aws_data_to_summary(res_list)
+    end
+    helper_method :textual_group_aws
+
+    def aws_data_to_summary(res_list)
+        reobj=[]
+        
+        res_list[0][:results_by_time].size.times do |index|
+            resobj=
+            {
+                :title => res_list[0][:results_by_time][index][:time_period][:start],
+                :component => :GenericGroup,
+            }
+            items=[]
+            res_list.each_with_index do |res,res_index|
+                item = 
+                {
+                    :label => [@model.all[res_index][:name] + " ($)"],
+                    :value => res[:results_by_time][index][:total]["AmortizedCost"][:amount].to_f.round(2),
+                    :hoverClass => "no-hover",
+                }
+                items.push(item)
+            end
+            resobj[:items]=items
+
+            reobj.push([resobj])    
+        end
+    
+        logger.debug("reobj = #{reobj.to_json}")
+        return reobj
+    end
+
 end
