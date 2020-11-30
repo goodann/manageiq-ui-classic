@@ -276,10 +276,15 @@ class CloudWatchController < ApplicationController
   @@metric_names = 
   {
     :CPUUtilization => {:label => "CPU Utilization Average", :unit => :Percent,},
-    :DiskReadBytes => {:label => "Disk Read Bytes Average", :unit => :Bytes,},
-    :DiskReadOps => {:label => "Disk Read Ops Average", :unit => :Count,},
-    :DiskWriteBytes => {:label => "Disk Write Bytes Average", :unit => :Bytes,},
-    :DiskWriteOps => {:label => "Disk Write Ops Average", :unit => :Count,},
+    :EBSReadBytes => {:label => "Disk Read Bytes Average", :unit => :Bytes,},
+    :EBSReadOps => {:label => "Disk Read Ops Average", :unit => :Count,},
+    :EBSWriteBytes => {:label => "Disk Write Bytes Average", :unit => :Bytes,},
+    :EBSWriteOps => {:label => "Disk Write Ops Average", :unit => :Count,},
+    
+    # :DiskReadBytes => {:label => "Disk Read Bytes Average", :unit => :Bytes,},
+    # :DiskReadOps => {:label => "Disk Read Ops Average", :unit => :Count,},
+    # :DiskWriteBytes => {:label => "Disk Write Bytes Average", :unit => :Bytes,},
+    # :DiskWriteOps => {:label => "Disk Write Ops Average", :unit => :Count,},
     :NetworkIn => {:label => "Network In Average", :unit => :Bytes,},
     :NetworkOut => {:label => "Network Out Average", :unit => :Bytes,},
     :NetworkPacketsIn => {:label => "Network Packets In Average", :unit => :Count,},
@@ -446,6 +451,7 @@ class CloudWatchController < ApplicationController
         {
           :x => 'x',
           :xFormat => "%Y-%m-%d %H:%M:%S",
+          #:xFormat => "%Y-%m-%d %H",
           :columns => 
           [
             timelist,
@@ -469,13 +475,15 @@ class CloudWatchController < ApplicationController
           :x =>
           {
             :type => :timeseries,
-            :localtime => true,
+            #:localtime => true,
             #:categories => stamplist,
             :multiline => false,
             :tick =>
             {
               :fit => true,
-              :format => '%m/%d',#'%Y-%m-%d',
+              :format => "%Y-%m-%d %H:%M:%S",#'%Y-%m-%d',
+              :width => 100,
+              :count => 3,
               :culling=> true,
               # :culling=> {
               #   :max=> 4,
