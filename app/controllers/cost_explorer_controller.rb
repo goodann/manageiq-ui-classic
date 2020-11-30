@@ -433,8 +433,13 @@ class CostExplorerController < ApplicationController
         :key => "RESOURCE_ID",
       },
     ]
-    @res_resources = client.get_cost_and_usage_with_resources(data)
-    
+    begin
+      @res_resources = client.get_cost_and_usage_with_resources(data)
+    rescue Exception
+      STDERR.puts "Failed to get_cost_and_usage_with_resources #{data}: #{$!}"
+      @res=nil
+      return nil,nil
+    end
     #@response = [cost_to_summary(res.results_by_time)]
     #return @response
     # @res = res
@@ -452,6 +457,10 @@ class CostExplorerController < ApplicationController
 
   def textual_group_aws
     res,res_resources = get_aws_cost_and_usage_data
+    if nil == res
+      @response=nil
+      return nil
+    end
     @response = aws_data_to_summary(res[:results_by_time],res_resources[:results_by_time])
     return @response
   end
@@ -459,6 +468,9 @@ class CostExplorerController < ApplicationController
 
   def aws_data_to_graph
     res,res_resources=get_aws_cost_and_usage_data
+    if nil == res
+      return nil
+    end
     obj=res[:results_by_time]
     obj_res= res_resources[:results_by_time]
     index = 1
@@ -633,7 +645,13 @@ class CostExplorerController < ApplicationController
       },
     ]
     #logger.debug("data = #{data.to_json}")
-    @res_resources = client.get_cost_and_usage_with_resources(data)
+    begin
+      @res_resources = client.get_cost_and_usage_with_resources(data)
+    rescue Exception
+      STDERR.puts "Failed to get_cost_and_usage_with_resources #{data}: #{$!}"
+      @res_resources=nil
+      return nil
+    end
     #logger.debug("@res_resources = #{@res_resources}")
     #@response = [cost_to_summary(res.results_by_time)]
     #return @response
@@ -646,13 +664,16 @@ class CostExplorerController < ApplicationController
     #   data[:next_token] = res.next_token
     # end
     #logger.debug("res = #{@res} ")
-    logger.debug("res_resources = #{@res_resources}")
+    #logger.debug("res_resources = #{@res_resources}")
     return @res_resources
   end
 
   def aws_data_to_graph_per_instance
 
     res_resources=get_aws_cost_and_usage_data_per_instance
+    if nil == res_resources
+      return nil
+    end
     #obj=res[:results_by_time]
     obj_res= res_resources[:results_by_time]
     index = 1
@@ -743,6 +764,9 @@ class CostExplorerController < ApplicationController
   
   def textual_group_aws_per_instance
     res_resources = get_aws_cost_and_usage_data_per_instance
+    if nil == res_resources
+      return nil
+    end
     #logger.debug("res_resources = #{res_resources}")
     @response = aws_per_instance_data_to_summary(res_resources[:results_by_time])
     return @response

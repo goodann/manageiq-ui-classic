@@ -4,7 +4,10 @@ module Menu
     class << self
       def default_menu
         [
-          dummy_menu_section,
+          #dummy_menu_section,
+          #datamon_menu_section,
+          #awx_menu_section,
+          
           costexplorer_menu_section,
           cloudwatch_menu_section,
           # user, group switcher & find are NOT part of the menu
@@ -25,6 +28,23 @@ module Menu
           help_menu_section,
         ]
       end
+      def datamon_menu_section
+        
+         Menu::Section.new(:databean, N_("자원 및 자산 모니터링"), 'fa fa-dashboard', [
+           #Menu::Item.new('hello',  N_('Hello'),  'hello',  {:feature => 'hello_view'},           '/ssk_test_page/index'),
+           Menu::Item.new('datamon',  N_('통합 모니터링'),  'datamon_explorer',  {:feature => 'watch_datamon'},           'http://ec2-3-34-186-54.ap-northeast-2.compute.amazonaws.com/~itsm/'),
+           Menu::Item.new('grapana',  N_('자산 모니터링'),  'grapana_explorer',  {:feature => 'watch_grapana'},           'http://ec2-3-34-186-54.ap-northeast-2.compute.amazonaws.com:3000/'),
+          
+         ])
+      end
+      def awx_menu_section
+        Menu::Item.new('awx',  N_('자동화 템플릿 등록'),  'awx',  {:feature => 'awx_index'},           'http://3.35.168.4/')
+        # Menu::Section.new(:dummy, N_("자동화 템플릿 등록"), 'fa fa-dashboard', [
+        #   #Menu::Item.new('hello',  N_('Hello'),  'hello',  {:feature => 'hello_view'},           '/ssk_test_page/index'),
+        #   Menu::Item.new('dummyIndex',  N_('dummyIndex'),  'dummyIndex',  {:feature => 'dummy_index'},           '/test_dummy_page/index'),
+          
+        # ])
+      end
       
       def dummy_menu_section
         Menu::Section.new(:dummy, N_("Dummy"), 'fa fa-dashboard', [
@@ -37,7 +57,7 @@ module Menu
         Menu::Section.new(:cost, N_("과금"), 'fa fa-dashboard', [
           #Menu::Item.new('hello',  N_('Hello'),  'hello',  {:feature => 'hello_view'},           '/ssk_test_page/index'),
           Menu::Item.new('ShowCreditCost',  N_('계정별 요금'),  'credit_cost',  {:feature => 'credit_explorer_view'},           '/cost_explorer/show_list'),
-          Menu::Item.new('ShowCreditCost',  N_('등록된 계정간 요금 비교'),  'multi_cost',  {:feature => 'multi_cost_view'},           '/multi_cost_view/index'),
+          Menu::Item.new('ShowAllCreditCost',  N_('등록된 계정간 요금 비교'),  'multi_cost',  {:feature => 'multi_cost_view'},           '/multi_cost_view/index'),
           #Menu::Item.new('ShowInstanceCost',  N_('instance Cost'),  'instance_cost',  {:feature => 'instance_explorer_view'},           '/cost_explorer/explorer_per_instance'),
           
           
@@ -47,7 +67,7 @@ module Menu
 
       def cloudwatch_menu_section
         Menu::Section.new(:watch, N_("모니터링"), 'fa fa-dashboard', [
-            #Menu::Item.new('hello',  N_('Hello'),  'hello',  {:feature => 'watch_hello'},           '/cloud_watch/index'),
+            datamon_menu_section,
             Menu::Item.new('explorer',  N_('인스턴스별 모니터링'),  'watch_explorer',  {:feature => 'watch_explorer_view'},           '/cloud_watch/explorer'),
           ])
       end
@@ -247,6 +267,7 @@ module Menu
 
       def automation_menu_section
         Menu::Section.new(:aut, N_("Automation"), 'pficon pficon-automation', [
+          awx_menu_section,
           ansible_menu_section,
           automation_manager_menu_section,
           automate_menu_section,
@@ -288,7 +309,7 @@ module Menu
       end
 
       def monitor_menu_section
-        Menu::Section.new(:monitor, N_("Monitor"), 'fa fa-heartbeat', [
+        Menu::Section.new(:monitor, N_("경보"), 'fa fa-heartbeat', [
           alerts_menu_section,
         ])
       end

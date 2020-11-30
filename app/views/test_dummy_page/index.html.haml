@@ -12,7 +12,6 @@
     .start_day_time
         Start_Day:
         = datetimepicker_input_tag("start_time",(DateTime.now.utc - 7*3600*24).strftime("%m/%d/%Y %H:%M"),'id'=>'start_time')
-    .end_day_time
         End_Day:
         = datetimepicker_input_tag("end_time",DateTime.now.utc.strftime("%m/%d/%Y %H:%M"),'id'=>'start_time')
     .drop_down

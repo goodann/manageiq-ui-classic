@@ -1,5 +1,9 @@
 #main_chart
-    = chart_local(aws_data_to_graph, :id => "miq_widgetchart_0".html_safe)
+    - data = aws_data_to_graph
+    - if nil != data
+        = chart_local(aws_data_to_graph, :id => "miq_widgetchart_0".html_safe)
+    - else
+        "값을 가져오지 못했습니다. 아마존 aws콘솔에서 aws비용 관리 > 기본 설정 > AWS Cost Explorer > 시간당 및 리소스 수준 데이터 설정을 확인 해주세요."
     -#= chart_local(aws_forecast_data_to_graph, :id => "miq_widgetchart_1".html_safe)
     -#= chart_local(aws_reservation_data_to_graph, :id => "miq_widgetchart_2".html_safe)
 #main_table

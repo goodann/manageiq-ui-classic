@@ -44,6 +44,7 @@ class CloudWatchController < ApplicationController
   end
 
   def index
+    @index = true
     data = get_data
     #logger.debug("get_data=#{data.to_json}")
     if nil == params[:start_time]
@@ -62,6 +63,8 @@ class CloudWatchController < ApplicationController
     
     logger.debug("@start_time params=#{@start_time}")
     logger.debug("@end_time params=#{@end_time}")
+    logger.debug("@period=#{@period}")
+    
     explorer
     #flash_to_session
     #redirect_to(:action => 'explorer')
@@ -317,7 +320,7 @@ class CloudWatchController < ApplicationController
     vm = find_record_with_rbac(VmCloud, vm_id)
     client = get_cloud_watch_client()
    
-
+    logger.debug("params = #{params.to_json}")
 
     @res = {:metric_data_results => {}}
     if nil == params[:start_time]
@@ -418,7 +421,7 @@ class CloudWatchController < ApplicationController
     @outObj = []
     
     timelist=Set.new(['x'])
-    logger.debug("obj.to_json=#{obj.to_json}");
+    #logger.debug("obj.to_json=#{obj.to_json}");
     obj.each_with_index do |(metric,data),index|
       datalist[index]=[metric]
       
@@ -623,6 +626,16 @@ class CloudWatchController < ApplicationController
 
     @explorer = true
     @sb[:action] = action unless action.nil?
+    logger.debug("replace_right_cell options=#{options.to_json}")
+    logger.debug("replace_right_cell params=#{params.to_json}")
+    logger.debug("replace_right_cell @sb=#{@sb.to_json}")
+    logger.debug("replace_right_cell @in_a_form=#{@in_a_form.to_json}")    
+    logger.debug("replace_right_cell index=#{@index.to_json}")    
+    logger.debug("@start_time params=#{@start_time}")
+    logger.debug("@end_time params=#{@end_time}")
+    logger.debug("@period=#{@period}")
+
+    #raise
     if @sb[:action] || params[:display]
       partial, action, @right_cell_text, options_from_right_cell = set_right_cell_vars(options) # Set partial name, action and cell header
     end
@@ -667,7 +680,7 @@ class CloudWatchController < ApplicationController
     )
 
     presenter.show(:default_left_cell).hide(:custom_left_cell)
-
+    logger.debug("record_showing= #{record_showing.to_json}")
     add_ajax = false
     if record_showing
       presenter.hide(:form_buttons_div)
@@ -727,8 +740,15 @@ class CloudWatchController < ApplicationController
 
       add_ajax = true
       presenter[:build_calendar] = true
+    elsif params[:action]=='index'
+      presenter.update(:top_div,r[:partial =>'index'])
     else
-      presenter.update(:main_div, r[:partial => 'layouts/x_gtl'])
+      logger.debug("presenter.update(:main_div, r[:partial => 'layouts/x_gtl'])")
+      logger.debug("params=#{params}")
+      #:id => params[:id],:start_time => params[:start_time],:end_time => params[:end_time],:period=>params[:period]
+      logger.debug("@start_time=#{@start_time}")
+      
+      presenter.update(:main_div, r[:partial => 'layouts/x_gtl',:id => params[:id],:start_time => params[:start_time],:end_time => params[:end_time],:period=>params[:period]])
     end
 
     if add_ajax && %w[performance timeline].include?(@sb[:action])

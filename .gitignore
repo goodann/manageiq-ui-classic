@@ -20,3 +20,4 @@ config/webpack/paths.json
 *.sw[po]
 cypress/screenshots
 cypress/videos
+dummy

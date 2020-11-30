@@ -1,4 +1,5 @@
-= render :partial => "layouts/flash_msg"
+-#= render :partial => "layouts/flash_msg"
+#adv_searchbox_div{:style => "display: none;"}
 -# These are the initial divs that will go inside center_cell_div
 - if @record
   -# Showing a specific VM or Template record
@@ -9,7 +10,7 @@
   -# Showing a list of VMs
   #main_div
     = render(:partial => 'layouts/x_gtl')
-+
+
 -# if show_advanced_search?
   :javascript
     #{javascript_show_if_exists("adv_searchbox_div")}
